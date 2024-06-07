@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-
+"""App views for AirBnB_clone_v3"""
 from api.v1.views import app_views
 from flask import jsonify
 
