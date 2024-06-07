@@ -82,4 +82,4 @@ class FileStorage:
         if cls is None:
             return len(self.__objects)
         else:
-            return len(all(cls))
+            return len(self.all(cls))
