@@ -154,8 +154,9 @@ EOF  all  create  destroy  help  quit  show  update
 No known bugs at this time. 
 
 ## Authors
-Nahla Densali - [Github](https://github.com/Naouwa) / [Twitter](https://twitter.com/)
-Abdelhamid EL YAAGOYBI - [Github](https://github.com/Abdel-lhamid) / [Twitter](https://x.com/Abdelhamid711)
+Alexa Orrico - [Github](https://github.com/alexaorrico) / [Twitter](https://twitter.com/alexa_orrico)  
+Jennifer Huang - [Github](https://github.com/jhuang10123) / [Twitter](https://twitter.com/earthtojhuang)
 
+Second part of Airbnb: Joann Vuong
 ## License
 Public Domain. No copy write protection. 
