@@ -11,6 +11,7 @@ def get_states():
     """get controller all states"""
     return jsonify([state.to_dict() for state in storage.all(State).values()])
 
+
 @app_views.route('/states/<state_id>', methods=['GET'], strict_slashes=False)
 def get_state_by_id(state_id):
     """get controller state by id"""
@@ -18,6 +19,7 @@ def get_state_by_id(state_id):
     if state is None:
         abort(404)
     return jsonify(state.to_dict())
+
 
 @app_views.route('/states', methods=['POST'], strict_slashes=False)
 def post_state():
@@ -31,6 +33,7 @@ def post_state():
     storage.new(new_state)
     new_state.save()
     return jsonify(new_state.to_dict()), 201
+
 
 @app_views.route('/states/<state_id>', methods=['PUT'], strict_slashes=False)
 def put_state(state_id):
@@ -47,7 +50,9 @@ def put_state(state_id):
     state.save()
     return jsonify(state.to_dict()), 200
 
-@app_views.route('/states/<state_id>', methods=['DELETE'], strict_slashes=False)
+
+@app_views.route('/states/<state_id>', methods=['DELETE'],
+                 strict_slashes=False)
 def delete_state(state_id):
     """delete controller delete a state"""
     state = storage.get(State, state_id)
