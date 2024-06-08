@@ -2,6 +2,7 @@
 """view for City objects that handles all default RESTFul API actions"""
 from models import storage
 from models.city import City
+from models.state import State
 from api.v1.views import app_views
 from flask import jsonify, abort, request
 
@@ -29,9 +30,9 @@ def post_city():
         abort(400, 'Not a JSON')
     if 'name' not in data:
         abort(400, 'Missing name')
-    if 'city_id' not in data:
-        abort(400, 'Missing city_id')
-    if storage.get(City, data['city_id']) is None:
+    if 'state_id' not in data:
+        abort(400, 'Missing state_id')
+    if storage.get(State, data['state_id']) is None:
         abort(404)
     new_city = City(**data)
     storage.new(new_city)
