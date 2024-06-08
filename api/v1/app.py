@@ -31,7 +31,7 @@ def page_not_found_404(error):
 @app.errorhandler(400)
 def handle_error_400(error):
     """handles error 400"""
-    if  isinstance(error, Exception) and hasattr(error, 'description'):
+    if isinstance(error, Exception) and hasattr(error, 'description'):
         return jsonify({"error": error.description}), 400
     return jsonify({"error": "Bad request"}), 400
 
