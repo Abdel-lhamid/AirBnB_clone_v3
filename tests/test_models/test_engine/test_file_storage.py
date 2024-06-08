@@ -114,6 +114,13 @@ class TestFileStorage(unittest.TestCase):
             js = f.read()
         self.assertEqual(json.loads(string), json.loads(js))
 
+    def test_reload(self):
+        """Testing the reload function"""
+        output = ("if file exists, deserializes JSON file to __objects, "
+                  "else nothing")
+        actual = FileStorage.reload.__doc__
+        self.assertEqual(output, actual)
+
     def test_get(self):
         output = ' retrieves one object '
         actual = FileStorage.get.__doc__
