@@ -75,9 +75,6 @@ def put_place(place_id):
     data = request.get_json()
     if data is None:
         abort(400, 'Not a JSON')
-    data = request.get_json()
-    if data is None:    
-        abort(400, 'Not a JSON')
     for key, value in data.items():
         if key not in ['id', 'user_id', 'city_id', 'created_at', 'updated_at']:
             setattr(place, key, value)
