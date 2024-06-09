@@ -135,5 +135,6 @@ class TestFileStorage(unittest.TestCase):
         """Test that get resturns one object"""
         self.assertEqual(None, storage.get(State, 'SomeBlaH'))
 
+
 if __name__ == '__main__':
     unittest.main

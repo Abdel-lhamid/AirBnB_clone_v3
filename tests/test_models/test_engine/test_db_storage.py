@@ -124,5 +124,6 @@ class TestFileStorage(unittest.TestCase):
         self.assertIsInstance(storage.count(), int)
         self.assertIsInstance(storage.count(State), int)
 
+
 if __name__ == '__main__':
     unittest.main
