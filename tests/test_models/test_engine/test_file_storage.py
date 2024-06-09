@@ -122,6 +122,7 @@ class TestFileStorage(unittest.TestCase):
         actual = FileStorage.reload.__doc__
         self.assertEqual(output, actual)
 
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_get(self):
         first_state_id = list(storage.all(State).values())[0].id
         self.assertEqual(first_state_id, storage.get(State, first_state_id).id)
@@ -131,6 +132,7 @@ class TestFileStorage(unittest.TestCase):
         self.assertIsInstance(storage.count(), int)
         self.assertIsInstance(storage.count(State), int)
 
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_get_not_existing_id(self):
         """Test that get resturns one object"""
         self.assertEqual(None, storage.get(State, 'SomeBlaH'))
