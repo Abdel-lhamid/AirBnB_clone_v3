@@ -6,6 +6,7 @@ Contains the TestFileStorageDocs classes
 from datetime import datetime
 import inspect
 import models
+from models import storage
 from models.engine import file_storage
 from models.amenity import Amenity
 from models.base_model import BaseModel
@@ -18,6 +19,7 @@ import json
 import os
 import pep8
 import unittest
+
 FileStorage = file_storage.FileStorage
 classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
@@ -116,18 +118,22 @@ class TestFileStorage(unittest.TestCase):
 
     def test_reload(self):
         """Testing the reload function"""
-        output = ("if file exists, deserializes JSON file to __objects, "
-                  "else nothing")
+        output = ("deserializes the JSON file to __objects")
         actual = FileStorage.reload.__doc__
         self.assertEqual(output, actual)
 
     def test_get(self):
-        output = ' retrieves one object '
-        actual = FileStorage.get.__doc__
-        self.assertEqual(output, actual)
+        first_state_id = list(storage.all(State).values())[0].id
+        self.assertEqual(first_state_id, storage.get(State, first_state_id).id)
 
     def test_count(self):
         """Testing the get function"""
-        output = ' counts number of objects of a class in storage '
-        actual = FileStorage.count.__doc__
-        self.assertEqual(output, actual)
+        self.assertIsInstance(storage.count(), int)
+        self.assertIsInstance(storage.count(State), int)
+
+    def test_get_not_existing_id(self):
+        """Test that get resturns one object"""
+        self.assertEqual(None, storage.get(State, 'SomeBlaH'))
+
+if __name__ == '__main__':
+    unittest.main

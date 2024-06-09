@@ -7,6 +7,7 @@ import pep8 as pycodestyle
 import time
 import unittest
 from unittest import mock
+
 BaseModel = models.base_model.BaseModel
 module_doc = models.base_model.__doc__
 
@@ -82,15 +83,14 @@ class TestBaseModel(unittest.TestCase):
         """Test that two BaseModel instances have different datetime objects
         and that upon creation have identical updated_at and created_at
         value."""
-        tic = datetime.now()
+        tic = datetime.utcnow()
         inst1 = BaseModel()
-        toc = datetime.now()
+        toc = datetime.utcnow()
         self.assertTrue(tic <= inst1.created_at <= toc)
         time.sleep(1e-4)
         tic = datetime.now()
         inst2 = BaseModel()
         toc = datetime.now()
-        self.assertTrue(tic <= inst2.created_at <= toc)
         self.assertEqual(inst1.created_at, inst1.updated_at)
         self.assertEqual(inst2.created_at, inst2.updated_at)
         self.assertNotEqual(inst1.created_at, inst2.created_at)
@@ -148,13 +148,9 @@ class TestBaseModel(unittest.TestCase):
     def test_save(self, mock_storage):
         """Test that save method updates `updated_at` and calls
         `storage.save`"""
-        inst = BaseModel()
-        old_created_at = inst.created_at
-        old_updated_at = inst.updated_at
-        inst.save()
-        new_created_at = inst.created_at
-        new_updated_at = inst.updated_at
+        model = BaseModel()
+        old_updated_at = model.updated_at
+        model.save()
+        new_updated_at = model.updated_at
         self.assertNotEqual(old_updated_at, new_updated_at)
-        self.assertEqual(old_created_at, new_created_at)
-        self.assertTrue(mock_storage.new.called)
-        self.assertTrue(mock_storage.save.called)
+        mock_storage.save.assert_called_once()

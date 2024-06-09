@@ -6,6 +6,7 @@ Contains the TestDBStorageDocs and TestDBStorage classes
 from datetime import datetime
 import inspect
 import models
+from models import storage
 from models.engine import db_storage
 from models.amenity import Amenity
 from models.base_model import BaseModel
@@ -18,6 +19,7 @@ import json
 import os
 import pep8
 import unittest
+
 DBStorage = db_storage.DBStorage
 classes = {"Amenity": Amenity, "City": City, "Place": Place,
            "Review": Review, "State": State, "User": User}
@@ -70,6 +72,7 @@ test_db_storage.py'])
 
 class TestFileStorage(unittest.TestCase):
     """Test the FileStorage class"""
+
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_all_returns_dict(self):
         """Test that all returns a dictionaty"""
@@ -96,20 +99,30 @@ class TestFileStorage(unittest.TestCase):
         actual = DBStorage.save.__doc__
         self.assertEqual(output, actual)
 
+    @unittest.skipIf(models.storage_t != "db", "Not testing db storage")
     def test_reload(self):
         """Testing the reload function"""
         output = ' creates all tables in database & session from engine '
         actual = DBStorage.reload.__doc__
         self.assertEqual(output, actual)
 
+    @unittest.skipIf(models.storage_t != "db", "Not testing db storage")
     def test_get(self):
         """Testing the get function"""
         output = ' retrieves one object '
         actual = DBStorage.get.__doc__
         self.assertEqual(output, actual)
 
+    @unittest.skipIf(models.storage_t != "db", "Not testing db storage")
+    def test_get_not_existing_id(self):
+        """Test that get resturns one object"""
+        self.assertEqual(None, storage.get(State, "SomeBlaH"))
+
+    @unittest.skipIf(models.storage_t != "db", "Not testing db storage")
     def test_count(self):
         """Test for the count function"""
-        output = 217
-        actual = len(DBStorage.count.__doc__)
-        self.assertEqual(output, actual)
+        self.assertIsInstance(storage.count(), int)
+        self.assertIsInstance(storage.count(State), int)
+
+if __name__ == '__main__':
+    unittest.main
