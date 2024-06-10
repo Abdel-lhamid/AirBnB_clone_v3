@@ -82,21 +82,36 @@ def put_place(place_id):
     return jsonify(place.to_dict()), 200
 
 
-@app_views.route('/places_search', methods=['POST'],
-                 strict_slashes=False)
+@app_views.route('/places_search', methods=['POST'], strict_slashes=False)
 def search_places():
-    """Retrieves the list of all Place objects"""
+    """Searches for Place objects based on the JSON in the request body"""
     data = request.get_json()
     if data is None:
         abort(400, 'Not a JSON')
-    places = storage.all(Place).values()
-    if 'states' in data:
-        places = [place for place in places
-                  if place.city.state_id in data['states']]
-    if 'cities' in data:
-        places = [place for place in places if place.city_id in data['cities']]
-    if 'amenities' in data:
-        places = [place for place in places
-                  if all(amenity.id in data['amenities']
-                         for amenity in place.amenities)]
+
+    states = data.get('states', [])
+    cities = data.get('cities', [])
+    amenities = data.get('amenities', [])
+
+    if not states and not cities and not amenities:
+        places = storage.all(Place).values()
+    else:
+        places = []
+        for state_id in states:
+            state = storage.get(State, state_id)
+            if state is not None:
+                places.extend(state.places)
+
+        for city_id in cities:
+            city = storage.get(City, city_id)
+            if city is not None:
+                places.extend(city.places)
+
+        places = list(set(places))  # Remove duplicates
+
+        if amenities:
+            places = [place for place in places
+                      if all(amenity_id in place.amenities
+                             for amenity_id in amenities)]
+
     return jsonify([place.to_dict() for place in places])
