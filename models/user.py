@@ -29,11 +29,12 @@ class User(BaseModel, Base):
         """initializes user"""
         super().__init__(*args, **kwargs)
 
+
     def __setattr__(self, name: str, value: sqlalchemy.Any) -> None:
         """hash the password and set other attributes"""
         if name == 'password':
             if isinstance(value, str):
-                value = hashlib.md5(value.encode()).hexdigest()
+                value = hashlib.md5(value.encode('utf8')).hexdigest()
                 super().__setattr__(name, value)
         else:
             super().__setattr__(name, value)
