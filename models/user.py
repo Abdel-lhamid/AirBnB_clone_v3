@@ -36,4 +36,6 @@ class User(BaseModel, Base):
         """hash the password and set other attributes"""
         if name == 'password' and isinstance(value, str):
             value = hashlib.md5(value.encode('utf8')).hexdigest()
-        super().__setattr__(name, value)
+            super().__setattr__(name, value)
+        else:
+            super().__setattr__(name, value)
